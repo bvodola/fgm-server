@@ -8,6 +8,7 @@ const register = user => {
       if (typeof user.password !== "undefined") {
         user.password = userModel.generateHash(user.password);
       }
+      user.role = "CLIENT";
 
       let newUser = await Users.create(user);
       const token = await tokens.generate({ _id: newUser.id });
