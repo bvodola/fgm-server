@@ -81,7 +81,7 @@ app.post("/cloudinary", async (req, res) => {
 // ===================
 // Production Settings
 // ===================
-if (app.settings.env !== "production") {
+if (app.settings.env === "production") {
   app.use(express.static("./client_build"));
   app.get("*", function(req, res) {
     res.sendFile("./client_build/index.html", { root: __dirname });
