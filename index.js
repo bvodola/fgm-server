@@ -13,7 +13,7 @@ const env = require("./env");
 // Initial Config
 // ==============
 const app = express();
-const port = env.PORT || 80;
+const port = env.PORT || 3000;
 const server = http.createServer(app);
 apolloServer.applyMiddleware({ app });
 app.use("/graphql", () => {});
@@ -78,15 +78,13 @@ app.post("/cloudinary", async (req, res) => {
   }
 });
 
-app.post("/aws/s3/sign", aws.sign_s3);
-
 // ===================
 // Production Settings
 // ===================
-if (app.settings.env === "production") {
-  app.use(express.static("./client/build"));
+if (app.settings.env !== "production") {
+  app.use(express.static("./client_build"));
   app.get("*", function(req, res) {
-    res.sendFile("./client/build/index.html", { root: __dirname });
+    res.sendFile("./client_build/index.html", { root: __dirname });
   });
 }
 

@@ -17,6 +17,7 @@ const typeDefs = gql`
     role: String
     tokens: Tokens
     password: String
+    created: String
 
     cro: String
     cpf: String
@@ -40,6 +41,8 @@ const typeDefs = gql`
   }
 
   type Receipt {
+    _id: ID
+    approved: Boolean
     dental_name: String
     code: String
     amount: String
@@ -47,6 +50,8 @@ const typeDefs = gql`
   }
 
   input ReceiptInput {
+    _id: ID
+    approved: Boolean
     dental_name: String
     code: String
     amount: String

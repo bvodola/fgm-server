@@ -30,6 +30,7 @@ const usersSchema = new Schema(
     receipts: [
       {
         dental_name: String,
+        approved: { type: Boolean, default: false },
         code: String,
         amount: String,
         files: [String]
