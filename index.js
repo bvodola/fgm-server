@@ -25,6 +25,15 @@ setInterval(function() {
   https.get(env.BACKEND_URL);
 }, 300000);
 
+app.get(
+  "/.well-known/acme-challenge/yeq1fgoR8_q2LIkpxywczJfhs4hrrZ-SBXEFxS-0Ut",
+  (req, res) => {
+    res.send(
+      "yeq1fgoR8_q2LIkpxywczJfhs4hrrZ-SBXEFxS-0Utc.VlMu2ztew0N4NQpSdZTrF_Sm8-4jKyr2vUWPkKGwTCY"
+    );
+  }
+);
+
 // ========================
 // Redir from HTTP to HTTPS
 // ========================
