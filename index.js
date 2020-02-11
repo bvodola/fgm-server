@@ -25,15 +25,6 @@ setInterval(function() {
   https.get(env.BACKEND_URL);
 }, 300000);
 
-app.get(
-  "/.well-known/acme-challenge/yeq1fgoR8_q2LIkpxywczJfhs4hrrZ-SBXEFxS-0Ut",
-  (req, res) => {
-    res.send(
-      "yeq1fgoR8_q2LIkpxywczJfhs4hrrZ-SBXEFxS-0Utc.VlMu2ztew0N4NQpSdZTrF_Sm8-4jKyr2vUWPkKGwTCY"
-    );
-  }
-);
-
 // ========================
 // Redir from HTTP to HTTPS
 // ========================
@@ -62,6 +53,18 @@ app.use((req, res, next) => {
   next();
 });
 
+// ===
+// SSL
+// ===
+app.get(
+  "/.well-known/acme-challenge/yeq1fgoR8_q2LIkpxywczJfhs4hrrZ-SBXEFxS-0Ut",
+  (req, res) => {
+    res.send(
+      "yeq1fgoR8_q2LIkpxywczJfhs4hrrZ-SBXEFxS-0Utc.VlMu2ztew0N4NQpSdZTrF_Sm8-4jKyr2vUWPkKGwTCY"
+    );
+  }
+);
+
 // ==========
 // Middleware
 // ==========
@@ -77,7 +80,9 @@ app.use(passport.initialize());
 require("./auth/strategies")(passport);
 app.use("/auth", require("./auth/routes")(passport));
 
+// ======
 // Routes
+// ======
 app.post("/cloudinary", async (req, res) => {
   try {
     const uploadRes = await cloudinary.upload(req.body.file);
