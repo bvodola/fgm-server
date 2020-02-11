@@ -57,10 +57,10 @@ app.use((req, res, next) => {
 // SSL
 // ===
 app.get(
-  "/.well-known/acme-challenge/yeq1fgoR8_q2LIkpxywczJfhs4hrrZ-SBXEFxS-0Ut",
+  "/.well-known/acme-challenge/Z1pTcnRxNucDg33GMZIZdS7CQyBxvX82xRPhzpQUfso",
   (req, res) => {
     res.send(
-      "yeq1fgoR8_q2LIkpxywczJfhs4hrrZ-SBXEFxS-0Utc.VlMu2ztew0N4NQpSdZTrF_Sm8-4jKyr2vUWPkKGwTCY"
+      "Z1pTcnRxNucDg33GMZIZdS7CQyBxvX82xRPhzpQUfso.VlMu2ztew0N4NQpSdZTrF_Sm8-4jKyr2vUWPkKGwTCY"
     );
   }
 );
