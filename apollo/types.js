@@ -8,6 +8,8 @@ const {
   linkToParent
 } = require("./functions");
 
+const { getReceipt } = require("./custom_functions");
+
 const typeDefs = gql`
   type User {
     _id: ID
@@ -66,34 +68,62 @@ const typeDefs = gql`
     local: String
   }
 
+  type Draw {
+    _id: ID
+    receipt: Receipt
+    winner: User
+    prize: String
+    published: Boolean
+    date_scheduled: String
+    date_performed: String
+    created: String
+  }
+
+  input DrawInput {
+    _id: ID
+    receipt_id: ID
+    winner_id: ID
+    prize: String
+    published: Boolean
+    date_scheduled: String
+    date_performed: String
+    created: String
+  }
+
   type Query {
     ${defaultQueries("user")}
+    ${defaultQueries("draw")}
   }
 
   type Mutation {
     ${defaultMutations("user")}
+    ${defaultMutations("draw")}
   }
-
-  
 `;
 
 const resolvers = {
   // ============
   // Custom Types
   // ============
+  Draw: {
+    receipt: getReceipt(),
+    winner: linkToParent({ fieldName: "winner" })
+  },
 
   // =====
   // Query
   // =====
   Query: {
-    ...defaultQueriesResolvers("user")
+    ...defaultQueriesResolvers("user"),
+    ...defaultQueriesResolvers("draw")
   },
 
   // ========
   // Mutation
   // ========
   Mutation: {
-    ...defaultMutationsResolvers("user")
+    ...defaultMutationsResolvers("user"),
+    ...defaultMutationsResolvers("draw")
   }
 };
 

@@ -109,7 +109,11 @@ const linkToParent = config => async (parent, args, context, info) => {
           [`${parentName}_id${config.habtm ? "s" : ""}`]: parent._id
         }).exec()
       ).map(prepare)
-    : prepare(await Model.findOne({ _id: parent[`${modelName}_id`] }));
+    : prepare(
+        await Model.findOne({
+          _id: parent[`${config.fieldName ? config.fieldName : modelName}_id`]
+        })
+      );
 };
 
 const linkToModel = config => async (parent, args, context, info) => {
@@ -168,6 +172,14 @@ const removeMutation = config => async (parent, args, context, info) => {
   return { _id };
 };
 
+const authenticated = next => (root, args, context, info) => {
+  if (!context.currentUser) {
+    throw new Error(`Unauthenticated!`);
+  }
+
+  return next(root, args, context, info);
+};
+
 module.exports = {
   capitalizeFirst,
   defaultQueries,
@@ -181,5 +193,6 @@ module.exports = {
   linkToModel,
   addMutation,
   editMutation,
-  removeMutation
+  removeMutation,
+  authenticated
 };

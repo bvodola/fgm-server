@@ -49,7 +49,21 @@ usersSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-const models = {};
+const drawsSchema = new Schema(
+  {
+    receipt_id: Schema.ObjectId,
+    winner_id: Schema.ObjectId,
+    prize: String,
+    published: Boolean,
+    date_scheduled: Date,
+    date_performed: Date,
+    created: { type: Date, default: Date.now }
+  },
+  { strict: false }
+);
+
+let models = {};
 models.Users = mongoose.model("users", usersSchema);
+models.Draws = mongoose.model("draws", drawsSchema);
 
 module.exports = models;
