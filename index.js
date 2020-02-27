@@ -6,7 +6,7 @@ const passport = require("passport");
 const session = require("cookie-session");
 const apolloServer = require("./apollo/types");
 const cloudinary = require("./cloudinary");
-const aws = require("./aws");
+const { createSheet } = require("./excel");
 const env = require("./env");
 
 // ==============
@@ -53,18 +53,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// ===
-// SSL
-// ===
-app.get(
-  "/.well-known/acme-challenge/Z1pTcnRxNucDg33GMZIZdS7CQyBxvX82xRPhzpQUfso",
-  (req, res) => {
-    res.send(
-      "Z1pTcnRxNucDg33GMZIZdS7CQyBxvX82xRPhzpQUfso.VlMu2ztew0N4NQpSdZTrF_Sm8-4jKyr2vUWPkKGwTCY"
-    );
-  }
-);
-
 // ==========
 // Middleware
 // ==========
@@ -89,6 +77,18 @@ app.post("/cloudinary", async (req, res) => {
     res.send(uploadRes);
   } catch (err) {
     res.send(err);
+  }
+});
+
+app.get("/api/excel", async (req, res) => {
+  try {
+    const data = JSON.parse(req.query.data);
+    const buffer = await createSheet(data);
+    res.set("Content-disposition", "attachment; filename=excel2.xlsx");
+    res.set("Content-Type", "text/xlsx");
+    res.send(buffer);
+  } catch (err) {
+    res.send(err.message);
   }
 });
 
