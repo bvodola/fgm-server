@@ -84,7 +84,7 @@ app.get("/api/excel", async (req, res) => {
   try {
     const data = JSON.parse(req.query.data);
     const buffer = await createSheet(data);
-    res.set("Content-disposition", "attachment; filename=excel2.xlsx");
+    res.set("Content-disposition", "attachment; filename=relatorio.xlsx");
     res.set("Content-Type", "text/xlsx");
     res.send(buffer);
   } catch (err) {
