@@ -1,6 +1,6 @@
 const Excel = require("exceljs");
 
-const createSheet = async (data = []) => {
+const createSheet = async (data = [], stream) => {
   // Ensuring that data is an array
   if (!Array.isArray(data)) data = [];
 
@@ -19,8 +19,11 @@ const createSheet = async (data = []) => {
   return new Promise((resolve, reject) => {
     try {
       // Write to file
-      workbook.xlsx.writeBuffer().then(function(buffer) {
-        resolve(buffer);
+      // workbook.xlsx.writeBuffer().then(function(buffer) {
+      //   resolve(buffer);
+      // });
+      workbook.xlsx.write(stream).then(function() {
+        resolve();
       });
     } catch (err) {
       reject(err);

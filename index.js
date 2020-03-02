@@ -80,13 +80,24 @@ app.post("/cloudinary", async (req, res) => {
   }
 });
 
-app.get("/api/excel", async (req, res) => {
+app.post("/api/excel", async (req, res) => {
   try {
-    const data = JSON.parse(req.query.data);
-    const buffer = await createSheet(data);
-    res.set("Content-disposition", "attachment; filename=relatorio.xlsx");
-    res.set("Content-Type", "text/xlsx");
-    res.send(buffer);
+    const data = JSON.parse(req.body.data);
+    // const buffer = await createSheet(data, res);
+    // res.set("Content-disposition", "attachment; filename=relatorio.xlsx");
+    // res.set(
+    //   "Content-Type",
+    //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    // );
+    res.attachment("report.xlsx");
+    res.set(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.status = 200;
+    await createSheet(data, res);
+
+    res.end();
   } catch (err) {
     res.send(err.message);
   }
