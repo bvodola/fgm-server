@@ -52,7 +52,7 @@ usersSchema.methods.validPassword = function(password) {
 const drawsSchema = new Schema(
   {
     receipt_id: Schema.ObjectId,
-    winner_id: Schema.ObjectId,
+    winner_ids: [Schema.ObjectId],
     prize: String,
     published: Boolean,
     date_scheduled: Date,

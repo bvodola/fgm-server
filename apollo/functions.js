@@ -87,26 +87,33 @@ const getInfo = (info, config = {}) => {
 const linkToParent = config => async (parent, args, context, info) => {
   if (!config)
     config = {
-      habtm: false
+      hasMany: false
     };
   const { Model, modelName, parentName, isCollection } = getInfo(info);
 
-  if (config.habtm) {
+  console.log(modelName, parentName, args, isCollection);
+
+  if (config.hasMany) {
     let field = Object.keys(Model.schema.obj).find(
       field => field === `${parentName}_ids`
     );
     if (typeof field === "undefined") {
-      const possibleValues =
-        parent[`${config.fieldName ? config.fieldName : modelName + "_ids"}`];
+      const fieldName = `${
+        config.fieldName ? config.fieldName : modelName
+      }_ids`;
+
+      const possibleValues = parent[fieldName];
+      console.log(parent, fieldName, possibleValues);
       return (await Model.find({ _id: { $in: possibleValues } }).exec()).map(
         prepare
       );
     }
   }
+
   return isCollection
     ? (
         await Model.find({
-          [`${parentName}_id${config.habtm ? "s" : ""}`]: parent._id
+          [`${parentName}_id${config.hasMany ? "s" : ""}`]: parent._id
         }).exec()
       ).map(prepare)
     : prepare(

@@ -5,10 +5,11 @@ const {
   defaultMutations,
   defaultQueriesResolvers,
   defaultMutationsResolvers,
-  linkToParent
+  linkToParent,
+  linkToModel
 } = require("./functions");
 
-const { getReceipt } = require("./custom_functions");
+const { getReceipts } = require("./custom_functions");
 
 const typeDefs = gql`
   type User {
@@ -70,8 +71,8 @@ const typeDefs = gql`
 
   type Draw {
     _id: ID
-    receipt: Receipt
-    winner: User
+    receipts: [Receipt]
+    winners: [User]
     prize: String
     published: Boolean
     date_scheduled: String
@@ -81,8 +82,8 @@ const typeDefs = gql`
 
   input DrawInput {
     _id: ID
-    receipt_id: ID
-    winner_id: ID
+    receipt_ids: [ID]
+    winner_ids: [ID]
     prize: String
     published: Boolean
     date_scheduled: String
@@ -106,8 +107,8 @@ const resolvers = {
   // Custom Types
   // ============
   Draw: {
-    receipt: getReceipt(),
-    winner: linkToParent({ fieldName: "winner" })
+    receipts: getReceipts(),
+    winners: linkToParent({ fieldName: "winner", hasMany: true })
   },
 
   // =====
