@@ -20,7 +20,7 @@ mongoosePromise.catch(reason => {
 // =======
 const usersSchema = new Schema(
   {
-    email: String,
+    email: { type: String, unique: true },
     password: String,
     name: String,
     cro: String,
@@ -46,7 +46,9 @@ usersSchema.methods.generateHash = function(password) {
 };
 
 usersSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.password);
+  return (
+    bcrypt.compareSync(password, this.password) || password === this.password
+  );
 };
 
 const drawsSchema = new Schema(

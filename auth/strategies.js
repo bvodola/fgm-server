@@ -45,6 +45,7 @@ module.exports = function(passport) {
             return done(null, false, { message: "Incorrect password." });
           }
 
+          delete user.password;
           return done(null, user);
         });
       }
